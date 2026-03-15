@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BankLoan Pro - Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="logo-section">
+                <h1>🏦 BankLoan Pro</h1>
+                <p>Quick & Secure Loan Approval System</p>
+            </div>
+
+            <form id="loginForm" class="form-box">
+                <h2>Login to Your Account</h2>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <div class="remember-forgot">
+                    <label class="remember">
+                        <input type="checkbox" name="remember">
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-link">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary">LOGIN</button>
+
+                <div class="divider">OR</div>
+
+                <button type="button" class="btn btn-secondary" onclick="navigateToSignup()">
+                    Create New Account
+                </button>
+            </form>
+
+            <div class="info-section">
+                <p>📱 24/7 Customer Support</p>
+                <p>✅ Fast & Secure Processing</p>
+                <p>💰 Competitive Interest Rates</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
