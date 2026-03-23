@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - GreenBank</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <i class="fas fa-leaf"></i>
+            <h2>GreenBank</h2>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a href="#" class="menu-item active" onclick="showSection('overview', event)">
+                <i class="fas fa-home"></i>
+                <span>Overview</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('applyloan', event)">
+                <i class="fas fa-file-alt"></i>
+                <span>Apply for Loan</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('myloans', event)">
+                <i class="fas fa-credit-card"></i>
+                <span>My Loans</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('profile', event)">
+                <i class="fas fa-user-circle"></i>
+                <span>Profile</span>
+            </a>
+            <a href="#" class="menu-item" onclick="showSection('settings', event)">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-dashboard">
+        <!-- Top Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1 id="greetingText">Welcome back!</h1>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="user-profile">
+                    <img id="profileAvatar" src="https://via.placeholder.com/40" alt="Profile">
+                    <div class="profile-info">
+                        <p id="userName">User</p>
+                        <small id="userEmail">user@greenbank.com</small>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Overview Section -->
+        <section id="overview" class="content-section active">
+            <div class="section-title">
+                <h2>Dashboard Overview</h2>
+                <p>Here's your financial summary</p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card card-balance">
+                    <div class="card-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-label">Total Borrowed</p>
+                        <h3 id="totalBorrowed">$0.00</h3>
+                    </div>
+                </div>
+
+                <div class="card card-loans">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-label">Active Loans</p>
+                        <h3 id="activeLoans">0</h3>
+                    </div>
+                </div>
+
+                <div class="card card-approved">
+                    <div class="card-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-label">Completed Loans</p>
+                        <h3 id="completedLoans">0</h3>
+                    </div>
+                </div>
+
+                <div class="card card-score">
+                    <div class="card-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-label">Credit Score</p>
+                        <h3 id="creditScore">650</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <table class="activity-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Loan Type</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Interest Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityBody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 20px; color: #999;">
+                                    No recent activity
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Apply for Loan Section -->
+        <section id="applyloan" class="content-section">
+            <div class="section-title">
+                <h2>Apply for Loan</h2>
+                <p>Get instant loan approval in minutes</p>
+            </div>
+
+            <div class="loan-application-container">
+                <form id="loanApplicationForm" class="loan-form">
+                    <div class="form-section">
+                        <h3>Loan Details</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="loanAmount">
+                                    <i class="fas fa-dollar-sign"></i> Loan Amount
+                                </label>
+                                <div class="input-with-slider">
+                                    <input 
+                                        type="number" 
+                                        id="loanAmount" 
+                                        placeholder="50,000"
+                                        min="1000"
+                                        max="500000"
+                                        step="1000"
+                                        required
+                                    >
+                                </div>
+                                <input type="range" id="loanAmountSlider" min="1000" max="500000" step="1000" value="50000">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="loanTerm">
+                                    <i class="fas fa-calendar"></i> Loan Duration
+                                </label>
+                                <select id="loanTerm" required>
+                                    <option value="">Select Duration</option>
+                                    <option value="6">6 Months</option>
+                                    <option value="12">12 Months</option>
+                                    <option value="24">24 Months</option>
+                                    <option value="36">36 Months</option>
+                                    <option value="48">48 Months</option>
+                                    <option value="60">60 Months</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="loanPurpose">
+                                    <i class="fas fa-list"></i> Purpose of Loan
+                                </label>
+                                <select id="loanPurpose" required>
+                                    <option value="">Select Purpose</option>
+                                    <option value="home">🏠 Home Purchase</option>
+                                    <option value="car">🚗 Auto Loan</option>
+                                    <option value="business">💼 Business Expansion</option>
+                                    <option value="education">📚 Education</option>
+                                    <option value="debt">💳 Debt Consolidation</option>
+                                    <option value="medical">🏥 Medical Emergency</option>
+                                    <option value="other">📄 Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="employmentStatus">
+                                    <i class="fas fa-briefcase"></i> Current Employment
+                                </label>
+                                <select id="employmentStatus" required>
+                                    <option value="">Select Status</option>
+                                    <option value="employed">Employed</option>
+                                    <option value="self-employed">Self-Employed</option>
+                                    <option value="retired">Retired</option>
+                                    <option value="student">Student</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Additional Information</h3>
+                        <div class="form-group">
+                            <label for="loanDescription">
+                                <i class="fas fa-sticky-note"></i> Additional Details
+                            </label>
+                            <textarea 
+                                id="loanDescription" 
+                                placeholder="Tell us more about your loan requirement..."
+                                rows="4"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <div class="loan-calculator">
+                        <h3>Loan Calculator</h3>
+                        <div class="calc-grid">
+                            <div class="calc-item">
+                                <span>Monthly Payment</span>
+                                <h4 id="monthlyPayment">$0.00</h4>
+                            </div>
+                            <div class="calc-item">
+                                <span>Interest Rate</span>
+                                <h4 id="interestRate">5.5%</h4>
+                            </div>
+                            <div class="calc-item">
+                                <span>Total Amount</span>
+                                <h4 id="totalAmount">$0.00</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-submit-loan">
+                        <i class="fas fa-paper-plane"></i> SUBMIT APPLICATION
+                    </button>
+                </form>
+
+                <div class="loan-info-sidebar">
+                    <div class="info-card">
+                        <h4>How It Works</h4>
+                        <ol>
+                            <li>Fill the application form</li>
+                            <li>Instant verification</li>
+                            <li>Auto approval (in most cases)</li>
+                            <li>Funds transfer to your account</li>
+                        </ol>
+                    </div>
+                    <div class="info-card">
+                        <h4>Approval Criteria</h4>
+                        <ul>
+                            <li>✓ Minimum age: 18 years</li>
+                            <li>✓ Annual income: $20k+</li>
+                            <li>✓ Valid ID required</li>
+                            <li>✓ Good credit history</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Loans Section -->
+        <section id="myloans" class="content-section">
+            <div class="section-title">
+                <h2>My Loans</h2>
+                <p>Manage and track all your loans</p>
+            </div>
+
+            <div class="loans-container" id="loansContainer">
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No loans yet</h3>
+                    <p>Start by applying for your first loan</p>
+                    <button class="btn btn-apply" onclick="showSection('applyloan', event)">
+                        Apply Now
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="content-section">
+            <div class="section-title">
+                <h2>My Profile</h2>
+                <p>Update your personal information</p>
+            </div>
+
+            <form id="profileForm" class="profile-form">
+                <div class="form-section">
+                    <h3>Personal Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="profFirstName">First Name</label>
+                            <input type="text" id="profFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profLastName">Last Name</label>
+                            <input type="text" id="profLastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profEmail">Email Address</label>
+                        <input type="email" id="profEmail" disabled>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="profPhone">Phone Number</label>
+                            <input type="tel" id="profPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profDOB">Date of Birth</label>
+                            <input type="date" id="profDOB" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Financial Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="profIncome">Annual Income</label>
+                            <input type="number" id="profIncome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profEmployment">Employment Status</label>
+                            <select id="profEmployment" required>
+                                <option value="employed">Employed</option>
+                                <option value="self-employed">Self-Employed</option>
+                                <option value="retired">Retired</option>
+                                <option value="student">Student</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-save-profile">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </form>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="content-section">
+            <div class="section-title">
+                <h2>Settings</h2>
+                <p>Manage your account preferences</p>
+            </div>
+
+            <div class="settings-container">
+                <div class="settings-card">
+                    <h3>Security</h3>
+                    <div class="setting-item">
+                        <div>
+                            <p class="setting-label">Change Password</p>
+                            <small>Update your account password</small>
+                        </div>
+                        <button class="btn btn-secondary" onclick="openPasswordModal()">
+                            Change
+                        </button>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <p class="setting-label">Two-Factor Authentication</p>
+                            <small>Add an extra layer of security</small>
+                        </div>
+                        <button class="btn btn-secondary" onclick="enable2FA()">
+                            Enable
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h3>Notifications</h3>
+                    <div class="setting-toggle">
+                        <label>
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                            Email Notifications
+                        </label>
+                    </div>
+                    <div class="setting-toggle">
+                        <label>
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                            SMS Alerts
+                        </label>
+                    </div>
+                    <div class="setting-toggle">
+                        <label>
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                            Marketing Emails
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h3>Privacy</h3>
+                    <div class="setting-toggle">
+                        <label>
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                            Show Profile to Other Users
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Password Change Modal -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Change Password</h2>
+                <button class="close-btn" onclick="closePasswordModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmNewPassword">Confirm Password</label>
+                    <input type="password" id="confirmNewPassword" required>
+                </div>
+                <button type="submit" class="btn btn-submit">Update Password</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
