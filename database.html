@@ -1,0 +1,98 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Viewer - GreenBank</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="signup-page">
+    <div class="signup-background">
+        <div class="animated-bg"></div>
+    </div>
+
+    <div class="signup-container">
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+
+        <div class="signup-box" style="max-width: 1000px;">
+            <h2 style="color: var(--primary-green); margin-bottom: 25px; text-align: center;">
+                <i class="fas fa-database"></i> Database Records
+            </h2>
+
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: var(--primary-green); margin-bottom: 15px;">
+                    <i class="fas fa-users"></i> Registered Users
+                </h3>
+                <div id="usersContainer" style="background: var(--lighter-green); padding: 15px; border-radius: 10px; max-height: 300px; overflow-y: auto;">
+                    <p style="color: var(--text-light); text-align: center;">No users registered</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: var(--primary-green); margin-bottom: 15px;">
+                    <i class="fas fa-file-invoice-dollar"></i> Loan Applications
+                </h3>
+                <div id="loansContainer" style="background: var(--lighter-green); padding: 15px; border-radius: 10px; max-height: 300px; overflow-y: auto;">
+                    <p style="color: var(--text-light); text-align: center;">No loans submitted</p>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary" onclick="clearDatabase()" style="margin-top: 25px; width: 200px;">
+                <i class="fas fa-trash"></i> Clear All Data
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function loadDatabase() {
+            const users = JSON.parse(localStorage.getItem('bankUsers')) || [];
+            const loans = JSON.parse(localStorage.getItem('bankLoans')) || [];
+
+            const usersContainer = document.getElementById('usersContainer');
+            const loansContainer = document.getElementById('loansContainer');
+
+            if (users.length === 0) {
+                usersContainer.innerHTML = '<p style="color: var(--text-light); text-align: center;">No users registered</p>';
+            } else {
+                usersContainer.innerHTML = users.map((user, index) => `
+                    <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 13px;">
+                        <strong>${index + 1}. ${user.firstName} ${user.lastName}</strong><br>
+                        Email: ${user.email}<br>
+                        Phone: ${user.phone}<br>
+                        Income: $${user.annualIncome?.toLocaleString()}<br>
+                        Credit Score: ${user.creditScore}
+                    </div>
+                `).join('');
+            }
+
+            if (loans.length === 0) {
+                loansContainer.innerHTML = '<p style="color: var(--text-light); text-align: center;">No loans submitted</p>';
+            } else {
+                loansContainer.innerHTML = loans.map((loan, index) => `
+                    <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 13px;">
+                        <strong>${index + 1}. ${loan.loanPurpose.toUpperCase()}</strong> - <span class="badge ${loan.status}">${loan.status}</span><br>
+                        Amount: $${parseFloat(loan.loanAmount).toLocaleString()}<br>
+                        Term: ${loan.loanTerm} months | Rate: ${loan.interestRate}%<br>
+                        Applied: ${new Date(loan.createdAt).toLocaleDateString()}
+                    </div>
+                `).join('');
+            }
+        }
+
+        function clearDatabase() {
+            if (confirm('Are you sure you want to clear all data?')) {
+                localStorage.removeItem('bankUsers');
+                localStorage.removeItem('bankLoans');
+                localStorage.removeItem('currentUser');
+                loadDatabase();
+            }
+        }
+
+        loadDatabase();
+        setInterval(loadDatabase, 2000);
+    </script>
+</body>
+</html>
